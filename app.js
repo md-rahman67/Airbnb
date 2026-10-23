@@ -16,6 +16,7 @@ const User = require("./models/user.models.js");
 //TODO->   routes
 const listingsRouter = require("./routes/listing.route.js");
 const reviewsRouter = require("./routes/review.route.js");
+const userRouter = require("./routes/user.route.js");
 
 
 
@@ -74,21 +75,24 @@ app.use((req, res, next) => {
 
 
 //TODO -----------------APIs / Routing ------------------------------
-app.get("/demouser", async (req, res) => {
-    let fakeUser = new User({
-        email: "Demo123@gmail.com",
-        username: "DemoUser"
-    });
+// app.get("/demouser", async (req, res) => {
+//     let fakeUser = new User({
+//         email: "Demo123@gmail.com",
+//         username: "DemoUser"
+//     });
 
-    let usss = await User.register(fakeUser,"DemoPassword");
-    console.log(usss);
-})
+//     let usss = await User.register(fakeUser,"DemoPassword");
+//     console.log(usss);
+// })
 
-//* Listings routes --------------------------
+//* Listings router --------------------------
 app.use("/listings", listingsRouter);
 
-//* Reviews Routes ---------------
+//* Reviews Router ---------------
 app.use("/listings/:id/reviews", reviewsRouter);
+
+//* User Router
+app.use("/", userRouter);
 
 
 //!--- Handling Errors Middlewares -------
