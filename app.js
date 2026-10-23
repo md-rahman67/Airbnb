@@ -64,8 +64,8 @@ app.use(flash());
 app.use(passport.initialize()); //* use passport we configure this
 app.use(passport.session()); //* if we using session write this
 passport.use(new LocalStrategy(User.authenticate())); //* authenticate() generates a function that is used in passport's LocalStrategy;
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(User.serializeUser()); //* track session / save s_id
+passport.deserializeUser(User.deserializeUser()); //* session finished / delete s_id
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");

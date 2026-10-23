@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 const User = require("../models/user.models.js");
 const joiUserSchema = require("../user.joi.js");
 const ExpressError = require("../utils/ExpressError.js");
+const passport = require("passport");
 
 
 //* validating review data before saving to the database;
@@ -38,6 +39,17 @@ router.post("/signup", userValidation, async (req, res) => {
         req.flash("error", e.message);
         res.redirect("/signup");
     }
+})
+
+router.get("/login", (req, res) => {
+    res.render("./users/login.ejs");
+})
+
+router.post(
+    "/login", passport.authenticate("local", 
+    {failureRedirect: "/login", failureFlash: true}),
+    async (req, res) => {
+    res.redirect("/listings");
 })
 
 module.exports = router;
