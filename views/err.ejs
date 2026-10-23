@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= statusCode %> | Something went wrong</title>
+
+  <style>
+    :root {
+      --bg: #f7f7f8;
+      --card: #ffffff;
+      --text: #1f2328;
+      --muted: #656d76;
+      --border: #e3e5e8;
+      --accent: #fe424d;
+      --accent-hover: #e63540;
+      --code: #d0d4d9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14161a;
+        --card: #1c1f24;
+        --text: #eceef1;
+        --muted: #9aa1ab;
+        --border: #2c3036;
+        --code: #3a3f47;
+      }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .error-card {
+      width: 100%;
+      max-width: 480px;
+      padding: 40px 32px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .error-code {
+      font-size: clamp(64px, 18vw, 96px);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--code);
+    }
+
+    .error-title {
+      margin: 16px 0 8px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .error-message {
+      margin-bottom: 28px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover { background: var(--bg); }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="error-card">
+    <h1 class="error-code"><%= statusCode %></h1>
+    <h2 class="error-title">Something went wrong</h2>
+    <p class="error-message"><%= message %></p>
+
+    <div class="actions">
+      <a href="/listings" class="btn btn-primary">Go to listings</a>
+      <button type="button" class="btn btn-outline" onclick="history.back()">Go back</button>
+    </div>
+  </main>
+</body>
+</html>
