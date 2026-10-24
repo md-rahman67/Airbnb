@@ -25,6 +25,11 @@ router.get("/", async (req, res) => {
 
 // *GET -> create form
 router.get("/new", (req, res) => {
+    console.log(req.user);
+    if(!req.isAuthenticated()){
+        req.flash("error", "User must be login to create listing");
+        return res.redirect("/login");
+    }
     res.render("./listings/neww.ejs");
 })
 
