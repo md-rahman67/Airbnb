@@ -24,7 +24,7 @@ router.get("/signup", (req, res, next) => {
 })
 
 //* Signup Route POST
-router.post("/signup", userValidation, async (req, res) => {
+router.post("/signup", userValidation, async (req, res, next) => {
     try {
         let { username, email, password } = req.body;
         let newUser = new User({
@@ -33,9 +33,15 @@ router.post("/signup", userValidation, async (req, res) => {
         });
         let kaboom = await User.register(newUser, password);
         console.log(kaboom);
-        req.flash("success", "Thank you for Joining");
-        res.redirect("/listings");
-    } catch(e){
+        req.login(kaboom, (err) => {
+            if (err) {
+                return next(err);
+            }
+            req.flash("success", "Thank you for Joining");
+            res.redirect("/listings");
+        })
+
+    } catch (e) {
         req.flash("error", e.message);
         res.redirect("/signup");
     }
@@ -46,10 +52,10 @@ router.get("/login", (req, res) => {
 })
 
 router.post(
-    "/login", passport.authenticate("local", 
-    {failureRedirect: "/login", failureFlash: true}),
+    "/login", passport.authenticate("local",
+        { failureRedirect: "/login", failureFlash: true }),
     async (req, res) => {
-    res.redirect("/listings");
-})
+        res.redirect("/listings");
+    })
 
 module.exports = router;

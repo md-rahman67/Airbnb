@@ -3,17 +3,17 @@ const router = express.Router();
 const Listing = require("../models/listing.models.js");
 const joiListingSchema = require("../schema.js"); //* Using joi validation for listing server-side form validation;
 const ExpressError = require("../utils/ExpressError.js"); //* custom error class to handle errors;
-const {isLoggedIn} = require("../middleware.js");
+const { isLoggedIn } = require("../middleware.js");
 
 //TODO-> Middlewares-------------------------------
 
 //* validating listing data before saving to the database;
 const validateListing = ((req, res, next) => {
-    let {error} = joiListingSchema.validate(req.body);
+    let { error } = joiListingSchema.validate(req.body);
 
-    if(error){
+    if (error) {
         throw new ExpressError(400, error.details[0].message);
-    }  else {
+    } else {
         next();
     }
 })
@@ -31,10 +31,22 @@ router.get("/new", isLoggedIn, (req, res) => {
 
 // *POST -> create route
 router.post("/", isLoggedIn, validateListing, async (req, res, next) => {
-    let {value} = joiListingSchema.validate(req.body);
+    let { value } = joiListingSchema.validate(req.body);
     await Listing.create(value);
     req.flash("success", "New Listing created!!");
     res.redirect("/listings");
+})
+
+//* logout route
+router.get("/logout", (req, res, next) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+
+        req.flash("success", "You're logged out")
+        res.redirect("/listings");
+    })
 })
 
 // *GET -> edit form
@@ -42,17 +54,17 @@ router.get("/:id/edit", isLoggedIn, async (req, res) => {
     let listId = req.params;
     let result = await Listing.findById(listId.id);
 
-    if(!result){
+    if (!result) {
         req.flash("error", "page you requested for does not exist anymore!");
         return res.redirect("/listings");
     }
-    
+
     res.render("./listings/edit.ejs", { result });
 })
 
 // *PUT -> edit route
 router.put("/:id", isLoggedIn, validateListing, async (req, res) => {
-    let listId = req.params;    
+    let listId = req.params;
 
     let { title, description, price, location, country } = req.body;
     await Listing.findByIdAndUpdate(listId.id, {
@@ -67,7 +79,7 @@ router.put("/:id", isLoggedIn, validateListing, async (req, res) => {
 
     req.flash("success", "Listing updated!");
 
-    
+
 
     res.redirect(`/listings/${listId.id}`);
 })
@@ -85,12 +97,14 @@ router.get("/:id", async (req, res) => {
     let listId = req.params;
     let result = await Listing.findById(listId.id).populate("reviews");
 
-    if(!result){
+    if (!result) {
         req.flash("error", "Listing you requested for does not exist anymore!");
         return res.redirect("/listings");
     }
 
     res.render("./listings/show.ejs", { result });
 })
+
+
 
 module.exports = router;
