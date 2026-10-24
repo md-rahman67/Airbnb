@@ -4,6 +4,7 @@ const User = require("../models/user.models.js");
 const joiUserSchema = require("../user.joi.js");
 const ExpressError = require("../utils/ExpressError.js");
 const passport = require("passport");
+const {saveRedirectUrl} = require("../middleware.js");
 
 
 //* validating review data before saving to the database;
@@ -52,10 +53,15 @@ router.get("/login", (req, res) => {
 })
 
 router.post(
-    "/login", passport.authenticate("local",
-        { failureRedirect: "/login", failureFlash: true }),
+    "/login",
+    saveRedirectUrl,
+    passport.authenticate("local", { failureRedirect: "/login", failureFlash: true }),
     async (req, res) => {
-        res.redirect("/listings");
+        req.flash("success", "Logged in");
+        if(res.locals.redirectUrl === undefined){
+            return res.redirect("/listings");
+        }
+        res.redirect(res.locals.redirectUrl);
     })
 
 module.exports = router;
