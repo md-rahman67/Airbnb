@@ -1,14 +1,15 @@
 const Listing = require("./models/listing.models.js");
-const joiListingSchema = require("./schema.js"); //* Using joi validation for listing server-side form validation;
-const ExpressError = require("./utils/ExpressError.js"); //* custom error class to handle errors;
-const joiReviewSchema = require("./review.joi.js"); //* Using joi validation for review server-side form validation;
+const Review = require("./models/reviews.model.js");
+const joiListingSchema = require("./schema.js");
+const ExpressError = require("./utils/ExpressError.js");
+const joiReviewSchema = require("./review.joi.js");
 
 
 //* check if user is logged in or not
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.session.redirectUrl = req.originalUrl
-        req.flash("error", "User must be logged in to create listing");
+        req.flash("error", "User must be logged in to perform this action");
         return res.redirect("/login");
     }
     next();
@@ -31,6 +32,19 @@ module.exports.isOwner = async (req, res, next) => {
     if (!listing.owner._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission to perform this action");
         return res.redirect(`/listings/${listId.id}`);
+    }
+    next()
+}
+
+//* check if the real owner is performing the action
+module.exports.isReviewer = async (req, res, next) => {
+    let { id, reviewId } = req.params;
+    let review = await Review.findById(reviewId);
+    console.log(res.locals.currUser._id);
+    console.log(review.reviewer._id);
+    if (!review.reviewer._id.equals(res.locals.currUser._id)) {
+        req.flash("error", "You don't have permission to perform this action");
+        return res.redirect(`/listings/${id}`);
     }
     next()
 }
