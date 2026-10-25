@@ -12,12 +12,14 @@
                     <img src="<%=result.image %>" class="card-img-top show-img" style="height: auto;">
                     <br>
                     <div class="card-body">
-                        Owner: <b><i>
+                        Owner: <b><i class="owner">
                                 <%= result.owner.username %>
                             </i></b>
                         <br><br>
                         <p class="card-text">
-                            <%=result.description %>
+                            <i>
+                                <%=result.description %>
+                            </i>
                         </p>
                         <p>&#8377;<%= result.price !=null ? result.price.toLocaleString("en-IN") : "Price unavailable"
                                 %> / night</p>
@@ -28,10 +30,9 @@
                             <%=result.country %>
                         </span>
                         <br>
-                        <br>
 
-                        
-
+                        <% if(currUser && currUser.username===result.owner.username) { %>
+                            <br>
                             <button class="btn btn-light"><a href="/listings/<%= result._id%>/edit">edit</a></button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -41,14 +42,10 @@
                                     onclick="return confirm('Are you sure you want to delete this listing?')">Delete</button>
                             </form>
 
-
-                            
-
-
-
+                        <% } %>
                     </div>
-                    <hr>
 
+                    <hr>
                     <h3>Reviews</h3>
 
                     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3">
@@ -61,49 +58,57 @@
                                             <%= rev.rating %>/5 &#9733
                                         </h4>
                                         <p class="card-text">
-                                            <%= rev.comment %>
+                                            <%= rev.comment %> ~
+                                                <i class="reviewer">
+                                                    <%= rev.reviewer.username %>
+                                                </i>
                                         </p>
                                         <br>
-                                        <form action="/listings/<%= result._id %>/reviews/<%= rev._id %>?_method=DELETE"
-                                            method="post">
-                                            <button class="btn btn-danger">Delete</button>
-                                        </form>
+                                        <% if(currUser && currUser.username===rev.reviewer.username) { %>
+                                            <form
+                                                action="/listings/<%= result._id %>/reviews/<%= rev._id %>?_method=DELETE"
+                                                method="post">
+                                                <button class="btn btn-danger">Delete</button>
+                                            </form>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
-                            <% } %>
+                        <% } %>
                     </div>
 
                     <br>
                     <hr>
 
                     <!-- *REVIEWS -->
-                    <div class="col-6">
-                        <h3>Leave a review</h3>
-                        <form action="/listings/<%= result._id %>/reviews" method="post" class="needs-validation"
-                            novalidate>
-                            <div class="mb-3">
-                                <label for="rating" class="form-label">rating</label>
-                                <div class="form-range">
-                                    <input type="range" name="rating" class="form-range-input" id="rating" min="1"
-                                        max="5" step="1" required>
+                    <% if(currUser) { %>
+
+                        <div class="col-6">
+                            <h3>Leave a review</h3>
+                            <form action="/listings/<%= result._id %>/reviews" method="post" class="needs-validation"
+                                novalidate>
+                                <div class="mb-3">
+                                    <label for="rating" class="form-label">rating</label>
+                                    <div class="form-range">
+                                        <input type="range" name="rating" class="form-range-input" id="rating" min="1"
+                                            max="5" step="1" required>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="comment">Write comment</label>
-                                <textarea name="comment" placeholder="write comment" rows="5" cols="50" id="comment"
-                                    class="form-control" required></textarea>
-                                <div class="invalid-feedback">Fill this field</div>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="comment">Write comment</label>
+                                    <textarea name="comment" placeholder="write comment" rows="5" cols="50" id="comment"
+                                        class="form-control" required></textarea>
+                                    <div class="invalid-feedback">Fill this field</div>
+                                </div>
 
-                            <button type="submit" class="btn btn-outline-dark">Submit</button>
-                        </form>
+                                <button type="submit" class="btn btn-outline-dark">Submit</button>
+                            </form>
 
-                        <br>
-                    </div>
-
-
+                            <br>
+                        </div>
+                        
+                    <% } %>
                 </div>
 
 

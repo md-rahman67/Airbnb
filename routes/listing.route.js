@@ -4,8 +4,6 @@ const Listing = require("../models/listing.models.js");
 const joiListingSchema = require("../schema.js"); //* Using joi validation for listing server-side form validation;
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 
-//TODO-> Middlewares-------------------------------
-
 
 
 // *GET -> index route -> GET all listing name
@@ -22,7 +20,9 @@ router.get("/new", isLoggedIn, (req, res) => {
 // *POST -> create route
 router.post("/", isLoggedIn, validateListing, async (req, res, next) => {
     let { value } = joiListingSchema.validate(req.body);
+
     value.owner = req.user._id; //* loggedIn user -> new listing Owner;
+
     await Listing.create(value); //* whole value including owner field;
     req.flash("success", "New Listing created!!");
     res.redirect("/listings");
@@ -87,8 +87,8 @@ router.delete("/:id", isLoggedIn, isOwner, async (req, res) => {
 // *GET/:id -> show route 
 router.get("/:id", async (req, res) => {
     let listId = req.params;
-    let result = await Listing.findById(listId.id).populate("reviews").populate("owner");
-    // console.log(result);
+    let result = await Listing.findById(listId.id).populate({path: "reviews", populate: {path: "reviewer"}}).populate("owner");
+
     if (!result) {
         req.flash("error", "Listing you requested for does not exist anymore!");
         return res.redirect("/listings");
@@ -96,9 +96,5 @@ router.get("/:id", async (req, res) => {
 
     res.render("./listings/show.ejs", { result });
 })
-
-
-
-
 
 module.exports = router;

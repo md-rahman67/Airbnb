@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router({mergeParams: true});
 const Review = require("../models/reviews.model.js");
 const Listing = require("../models/listing.models.js");
-const {revValidation} = require("../middleware.js");
+const {revValidation, isLoggedIn} = require("../middleware.js");
 
 
 
@@ -13,7 +13,7 @@ const {revValidation} = require("../middleware.js");
 //* Routes-------------------------------
 
 //* POST REQ -> Add review route
-router.post("/", revValidation, async (req, res, next) => {
+router.post("/", isLoggedIn, revValidation, async (req, res, next) => {
     let listId = req.params;
     let listing = await Listing.findById(listId.id);
     let { rating, comment } = req.body;
@@ -23,6 +23,8 @@ router.post("/", revValidation, async (req, res, next) => {
         rating: rating
     });
 
+    newReview.reviewer = req.user._id;
+
     listing.reviews.push(newReview);
 
     await newReview.save();
@@ -31,6 +33,7 @@ router.post("/", revValidation, async (req, res, next) => {
     req.flash("success", "Review created!");
     res.redirect(`/listings/${listId.id}`);
 })
+
 
 //* Delete Review Route
 router.delete("/:reviewId", async(req, res, next) => {

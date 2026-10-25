@@ -46,6 +46,12 @@ body {
     
     text-decoration: underline blue !important;
 }
+.reviewer{
+    text-decoration: underline rgb(13, 0, 255);
+}
+.owner{
+    text-decoration: underline wavy red;
+}
 
 
 
