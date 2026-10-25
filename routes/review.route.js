@@ -5,12 +5,7 @@ const Listing = require("../models/listing.models.js");
 const {revValidation, isLoggedIn, isReviewer} = require("../middleware.js");
 
 
-
-//TODO-> Middlewares--------------------------------
-
-
-
-//* Routes-------------------------------
+//* Routes-------
 
 //* POST REQ -> Add review route
 router.post("/", isLoggedIn, revValidation, async (req, res, next) => {

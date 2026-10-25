@@ -27,7 +27,11 @@ module.exports.saveRedirectUrl = (req, res, next) => {
 module.exports.isOwner = async (req, res, next) => {
     let listId = req.params;
     let listing = await Listing.findById(listId.id);
-    console.log(listing);
+
+    if (!listing) {
+        req.flash("error", "Listing not found");
+        return res.redirect("/listings");
+    }
 
     if (!listing.owner._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission to perform this action");
@@ -40,8 +44,12 @@ module.exports.isOwner = async (req, res, next) => {
 module.exports.isReviewer = async (req, res, next) => {
     let { id, reviewId } = req.params;
     let review = await Review.findById(reviewId);
-    console.log(res.locals.currUser._id);
-    console.log(review.reviewer._id);
+
+    if (!review) {
+        req.flash("error", "Review not found");
+        return res.redirect("/listings");
+    }
+
     if (!review.reviewer._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission to perform this action");
         return res.redirect(`/listings/${id}`);
@@ -62,9 +70,9 @@ module.exports.validateListing = ((req, res, next) => {
 
 //* validating review data before saving to the database;
 module.exports.revValidation = ((req, res, next) => {
-    let {error} = joiReviewSchema.validate(req.body);
+    let { error } = joiReviewSchema.validate(req.body);
 
-    if(error){
+    if (error) {
         console.log(error);
         throw new ExpressError(400, error.details[0].message);
     } else {
