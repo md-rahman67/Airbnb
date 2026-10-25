@@ -2,21 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Listing = require("../models/listing.models.js");
 const joiListingSchema = require("../schema.js"); //* Using joi validation for listing server-side form validation;
-const ExpressError = require("../utils/ExpressError.js"); //* custom error class to handle errors;
-const { isLoggedIn } = require("../middleware.js");
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 
 //TODO-> Middlewares-------------------------------
 
-//* validating listing data before saving to the database;
-const validateListing = ((req, res, next) => {
-    let { error } = joiListingSchema.validate(req.body);
 
-    if (error) {
-        throw new ExpressError(400, error.details[0].message);
-    } else {
-        next();
-    }
-})
 
 // *GET -> index route -> GET all listing name
 router.get("/", async (req, res) => {
@@ -50,8 +40,12 @@ router.get("/logout", (req, res, next) => {
     })
 })
 
+router.get("/hello", (req, res) => {
+    console.log(res.locals.currUser._id)
+})
+
 // *GET -> edit form
-router.get("/:id/edit", isLoggedIn, async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isOwner, async (req, res) => {
     let listId = req.params;
     let result = await Listing.findById(listId.id);
 
@@ -64,9 +58,8 @@ router.get("/:id/edit", isLoggedIn, async (req, res) => {
 })
 
 // *PUT -> edit route
-router.put("/:id", isLoggedIn, validateListing, async (req, res) => {
+router.put("/:id", isLoggedIn, isOwner, validateListing, async (req, res) => {
     let listId = req.params;
-
     let { title, description, price, location, country } = req.body;
     await Listing.findByIdAndUpdate(listId.id, {
         $set: {
@@ -80,13 +73,11 @@ router.put("/:id", isLoggedIn, validateListing, async (req, res) => {
 
     req.flash("success", "Listing updated!");
 
-
-
     res.redirect(`/listings/${listId.id}`);
 })
 
 // !DELETE -> delete route
-router.delete("/:id", isLoggedIn, async (req, res) => {
+router.delete("/:id", isLoggedIn, isOwner, async (req, res) => {
     let listId = req.params;
     await Listing.findByIdAndDelete(listId.id);
     req.flash("success", "Listing deleted!");
@@ -105,6 +96,8 @@ router.get("/:id", async (req, res) => {
 
     res.render("./listings/show.ejs", { result });
 })
+
+
 
 
 

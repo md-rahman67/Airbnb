@@ -1,25 +1,14 @@
 const express = require("express");
 const router = express.Router({mergeParams: true});
 const Review = require("../models/reviews.model.js");
-const joiReviewSchema = require("../review.joi.js"); //* Using joi validation for review server-side form validation;
-const ExpressError = require("../utils/ExpressError.js"); //* custom error class to handle errors;
 const Listing = require("../models/listing.models.js");
+const {revValidation} = require("../middleware.js");
 
 
 
 //TODO-> Middlewares--------------------------------
 
-//* validating review data before saving to the database;
-const revValidation = ((req, res, next) => {
-    let {error} = joiReviewSchema.validate(req.body);
 
-    if(error){
-        console.log(error);
-        throw new ExpressError(400, error.details[0].message);
-    } else {
-        next();
-    }
-})
 
 //* Routes-------------------------------
 
