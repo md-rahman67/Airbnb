@@ -32,7 +32,8 @@ router.get("/new", isLoggedIn, (req, res) => {
 // *POST -> create route
 router.post("/", isLoggedIn, validateListing, async (req, res, next) => {
     let { value } = joiListingSchema.validate(req.body);
-    await Listing.create(value);
+    value.owner = req.user._id; //* loggedIn user -> new listing Owner;
+    await Listing.create(value); //* whole value including owner field;
     req.flash("success", "New Listing created!!");
     res.redirect("/listings");
 })
@@ -95,8 +96,8 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
 // *GET/:id -> show route 
 router.get("/:id", async (req, res) => {
     let listId = req.params;
-    let result = await Listing.findById(listId.id).populate("reviews");
-
+    let result = await Listing.findById(listId.id).populate("reviews").populate("owner");
+    // console.log(result);
     if (!result) {
         req.flash("error", "Listing you requested for does not exist anymore!");
         return res.redirect("/listings");
