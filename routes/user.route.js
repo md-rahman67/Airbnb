@@ -4,7 +4,8 @@ const User = require("../models/user.models.js");
 const joiUserSchema = require("../user.joi.js");
 const ExpressError = require("../utils/ExpressError.js");
 const passport = require("passport");
-const {saveRedirectUrl} = require("../middleware.js");
+const { saveRedirectUrl } = require("../middleware.js");
+const { signupForm, signingUp, loginForm, loggedIn } = require("../controllers/user.controller.js");
 
 
 //* validating review data before saving to the database;
@@ -20,48 +21,18 @@ const userValidation = ((req, res, next) => {
 })
 
 //* SignUp form route GET
-router.get("/signup", (req, res, next) => {
-    res.render("./users/signup.ejs");
-})
+router.get("/signup", signupForm)
 
 //* Signup Route POST
-router.post("/signup", userValidation, async (req, res, next) => {
-    try {
-        let { username, email, password } = req.body;
-        let newUser = new User({
-            username: username,
-            email: email
-        });
-        let kaboom = await User.register(newUser, password);
-        console.log(kaboom);
-        req.login(kaboom, (err) => {
-            if (err) {
-                return next(err);
-            }
-            req.flash("success", "Thank you for Joining");
-            res.redirect("/listings");
-        })
+router.post("/signup", userValidation, signingUp)
 
-    } catch (e) {
-        req.flash("error", e.message);
-        res.redirect("/signup");
-    }
-})
-
-router.get("/login", (req, res) => {
-    res.render("./users/login.ejs");
-})
+//* Login Form
+router.get("/login", loginForm)
 
 router.post(
     "/login",
     saveRedirectUrl,
     passport.authenticate("local", { failureRedirect: "/login", failureFlash: true }),
-    async (req, res) => {
-        req.flash("success", "Logged in");
-        if(res.locals.redirectUrl === undefined){
-            return res.redirect("/listings");
-        }
-        res.redirect(res.locals.redirectUrl);
-    })
+    loggedIn)
 
 module.exports = router;
