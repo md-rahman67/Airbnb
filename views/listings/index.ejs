@@ -1,33 +1,53 @@
 <% layout("/layouts/boilerplate") %>
-<!-- <%= success %> -->
-<body>
 
-        <h3>All Listings</h3>
-        <!-- <a href="/listings/new">New Listing</a> -->
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
-            <% for(list of listings){ %>
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Explore Listings</h2>
+            <p class="text-secondary mb-0">Find your perfect getaway.</p>
+        </div>
 
-                <div class="col">
+        <a href="/listings/new" class="btn btn-dark rounded-pill addList">
+            <i class="fa-solid fa-plus me-1"></i> Add Listing
+        </a>
+    </div>
 
-                    <div class="card card-boundry h-100 card-idx" style="width: 100%; height: auto;">
-                        <div class="card-body">
-                            <a href="/listings/<%= list._id %>">
-                                <img src="<%=list.image %>" class="card-img-top card-img-idx">
-                            </a>
-                            <p class="card-title">
-                                <b>
-                                    <%=list.title %>
-                                </b>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <% for (let list of listings) { %>
+            <div class="col">
+                <a href="/listings/<%= list._id %>"
+                   class="text-decoration-none text-dark">
+
+                    <div class="card border-0 h-100">
+                        <img
+                            src="<%= list.image %>"
+                            class="card-img-top rounded-4"
+                            alt="<%= list.title %>"
+                            style="height: 250px; object-fit: cover;"
+                        >
+
+                        <div class="card-body px-0">
+                            <h6 class="fw-bold mb-2">
+                                <%= list.title %>
+                            </h6>
+
+                            <p class="text-secondary small mb-2">
+                                Discover your next getaway
                             </p>
-                            <p class="card-text">
-                                &#8377;<%= list.price !=null ? list.price.toLocaleString("en-IN") : "Price unavailable"
-                                    %> / night
+
+                            <p class="mb-0">
+                                <strong>
+                                    ₹<%= list.price != null
+                                        ? list.price.toLocaleString("en-IN")
+                                        : "Price unavailable" %>
+                                </strong>
+                                <span class="text-secondary"> / night</span>
                             </p>
                         </div>
                     </div>
 
-                </div>
-
-                <% } %>
-        </div>
-    </body>
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>

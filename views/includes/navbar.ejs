@@ -1,28 +1,55 @@
-<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#"> <img src="/images/logo.png" alt="MyStay" width="45"> </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="/">Home</a>
-        <a class="nav-link" href="/listings">Listings</a>
-        <a class="nav-link" href="/listings/new">Add</a>
-      </div>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top shadow-sm">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/listings">
+            <img src="/images/logo.png" alt="MyStay" width="40" height="40" class="object-fit-contain">
+            <span class="fs-4">MyStay</span>
+        </a>
 
-      <div class="navbar-nav ms-auto me-5">
-        <% if (!currUser) { %>
-          <a class="nav-link login" href="/login">Login</a>
-          <a class="nav-link login" href="/signup">Sign Up</a>
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler shadow-none" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <% } %>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Main navigation -->
+            <div class="navbar-nav ms-lg-4 gap-lg-2">
+                <a class="nav-link" href="/">
+                    <i class="fa-solid fa-house me-1"></i> Home
+                </a>
+                <a class="nav-link" href="/listings">
+                    <i class="fa-solid fa-compass me-1"></i> Explore
+                </a>
+                <% if (currUser) { %>
+                    <a class="nav-link" href="/listings/new">
+                        <i class="fa-solid fa-plus me-1"></i> Add Listing
+                    </a>
+                <% } %>
+            </div>
 
-        <% if(currUser) { %>
-          <a class="nav-link login" href="/listings/logout">logout</a>
-        <% } %>
+            <!-- User actions -->
+            <div class="navbar-nav ms-lg-auto align-items-lg-center gap-lg-2 mt-3 mt-lg-0">
+                <% if (!currUser) { %>
+                    <a class="nav-link text-dark" href="/login">Login</a>
+                    <a class="btn btn-dark rounded-pill px-4" href="/signup">
+                        Sign Up
+                    </a>
+                <% } else { %>
+                    <span class="nav-link text-secondary">
+                        <i class="fa-regular fa-user me-1"></i>
+                        <%= currUser.username %>
+                    </span>
 
-      </div>
+                    <a class="btn btn-outline-dark rounded-pill px-3"
+                       href="/listings/logout">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-1"></i>
+                        Logout
+                    </a>
+                <% } %>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>

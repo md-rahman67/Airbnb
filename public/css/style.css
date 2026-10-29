@@ -80,6 +80,14 @@ body {
     color: #ffc107;
 }
 
+.card img {
+    transition: opacity 0.2s ease;
+}
+
+.card:hover img {
+    opacity: 0.9;
+}
+
 
 
 
@@ -96,5 +104,11 @@ body {
 @media (min-width: 992px) {
     .show-img {
         height: 30rem !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .addList {
+        display: none !important;
     }
 }

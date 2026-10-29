@@ -1,58 +1,146 @@
 <% layout("/layouts/boilerplate") %>
 
-    <body>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7">
 
-        <div class="row">
+            <div class="mb-4">
+                <h2 class="fw-bold mb-2">Create a New Listing</h2>
+                <p class="text-secondary mb-0">
+                    Share your place with travellers around the world.
+                </p>
+            </div>
 
-            <div class="col-8 offset-2">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
 
-                <h2>Create a New Listing: </h2>
+                    <form action="/listings" method="post"
+                          class="needs-validation" novalidate>
 
-                <form action="/listings" method="post" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Enter Title</label>
-                        <input type="text" name="title" placeholder="title" id="title" class="form-control" required>
-                        <div class="invalid-feedback">Title is required</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="des" class="form-label">Enter Description</label>
-                        <textarea name="description" placeholder="description" rows="5" cols="50" id="des"class="form-control" required>
-
-                        </textarea>
-                        <div class="invalid-feedback">Description is required</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="img" class="form-label">Image Link</label>
-                       <input type="text" name="image" placeholder="image link" id="img" class="form-control">
-                    </div>
-
-                    <div class="row">
-                         <div class="col-4 mb-3">
-                            <label for="price" class="form-label">Enter Price</label>
-                            <div class="input-group">
-                                <span class="input-group-text" style="background-color: #dfdede;">&#8377;</span>
-                                <input class="form-control" id="price" name="price" required>
-                                <div class="invalid-feedback">Price is required</div>
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold">
+                                Listing Title
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                id="title"
+                                placeholder="e.g. Cozy cottage near the mountains"
+                                class="form-control"
+                                required
+                            >
+                            <div class="invalid-feedback">
+                                Title is required.
                             </div>
                         </div>
 
-                        <div class="mb-3 col-8">
-                            <label for="loc" class="form-label">Enter Location</label>
-                            <input type="text" name="location" placeholder="location" id="loc" class="form-control" required>
-                            <div class="invalid-feedback">Location is required</div>
+                        <div class="mb-4">
+                            <label for="des" class="form-label fw-semibold">
+                                Description
+                            </label>
+                            <textarea
+                                name="description"
+                                id="des"
+                                placeholder="Describe your place, its features, and what makes it special..."
+                                rows="4"
+                                class="form-control"
+                                required
+                            ></textarea>
+                            <div class="invalid-feedback">
+                                Description is required.
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3 form-label">
-                        <label for="con" class="form-label">Enter Country</label>
-                        <input type="text" name="country" placeholder="country" id="con" class="form-control" required>
-                        <div class="invalid-feedback">Country is required</div>
-                    </div>
+                        <div class="mb-4">
+                            <label for="img" class="form-label fw-semibold">
+                                Image URL
+                                <span class="text-secondary fw-normal">(optional)</span>
+                            </label>
+                            <input
+                                type="url"
+                                name="image"
+                                id="img"
+                                placeholder="https://example.com/image.jpg"
+                                class="form-control"
+                            >
+                        </div>
 
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </form>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12 col-sm-5">
+                                <label for="price" class="form-label fw-semibold">
+                                    Price per Night
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        id="price"
+                                        placeholder="2500"
+                                        min="0"
+                                        class="form-control"
+                                        required
+                                    >
+                                    <div class="invalid-feedback">
+                                        Please enter a price.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-7">
+                                <label for="loc" class="form-label fw-semibold">
+                                    Location
+                                </label>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    id="loc"
+                                    placeholder="e.g. Manali, Himachal Pradesh"
+                                    class="form-control"
+                                    required
+                                >
+                                <div class="invalid-feedback">
+                                    Location is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="con" class="form-label fw-semibold">
+                                Country
+                            </label>
+                            <input
+                                type="text"
+                                name="country"
+                                id="con"
+                                placeholder="e.g. India"
+                                class="form-control"
+                                required
+                            >
+                            <div class="invalid-feedback">
+                                Country is required.
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex flex-column flex-sm-row gap-2">
+                            <button type="submit"
+                                    class="btn btn-dark rounded-pill px-4">
+                                <i class="fa-solid fa-plus me-2"></i>
+                                Create Listing
+                            </button>
+
+                            <a href="/listings"
+                               class="btn btn-outline-secondary rounded-pill px-4">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
             </div>
+
         </div>
-    </body>
+    </div>
+</div>

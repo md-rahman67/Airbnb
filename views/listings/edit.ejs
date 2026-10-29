@@ -1,64 +1,150 @@
 <% layout("/layouts/boilerplate") %>
 
-    <body>
-        <div class="row">
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7">
 
-            <div class="col-8 offset-2">
+            <div class="mb-4">
+                <h2 class="fw-bold mb-2">Edit Your Listing</h2>
+                <p class="text-secondary mb-0">
+                    Update your listing details and keep them up to date.
+                </p>
+            </div>
 
-                <h2>Edit your listing:</h2>
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
 
-                <form action="/listings/<%= result._id %>?_method=PUT" method="post" novalidate class="needs-validation">
+                    <form action="/listings/<%= result._id %>?_method=PUT"
+                          method="post"
+                          class="needs-validation"
+                          novalidate>
 
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Edit Title</label>
-                        <input type="text" name="title" class="form-control" value="<%= result.title %>" required>
-                         <div class="invalid-feedback">Title is required</div>
-                    </div>
-
-
-
-                    <div class="mb-3">
-                        <label for="des" class="form-label">Edit Description</label>
-                        <textarea name="description" class="form-control" placeholder="description" rows="5" cols="50" required
-                            id="des"><%= result.description %></textarea>
-                             <div class="invalid-feedback">description is required</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Edit Image Link</label>
-                        <input type="text" name="image" class="form-control" id="price" value="<%= result.image %>" required>
-                        <div class="invalid-feedback">Image is required</div>
-                    </div>
-
-                    <div  class="row">
-
-                        <div class="mb-3 col-4">
-                            <label for="price" class="form-label">Edit Price</label>
-                            <input type="number" name="price" class="form-control" id="price"
-                                value="<%= result.price %>" required>
-                                <div class="invalid-feedback">Price is required</div>
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold">
+                                Listing Title
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                id="title"
+                                class="form-control"
+                                value="<%= result.title %>"
+                                required
+                            >
+                            <div class="invalid-feedback">
+                                Title is required.
+                            </div>
                         </div>
 
-
-                        <div class="mb-3 col-8">
-                            <label for="loc" class="form-label">Edit Location</label>
-                            <input type="text" name="location" class="form-control" id="loc"
-                                value="<%= result.location %>" required>
-                                <div class="invalid-feedback">Location is required</div>
+                        <div class="mb-4">
+                            <label for="des" class="form-label fw-semibold">
+                                Description
+                            </label>
+                            <textarea
+                                name="description"
+                                id="des"
+                                class="form-control"
+                                rows="4"
+                                required
+                            ><%= result.description %></textarea>
+                            <div class="invalid-feedback">
+                                Description is required.
+                            </div>
                         </div>
 
-                    </div>
+                        <div class="mb-4">
+                            <label for="image" class="form-label fw-semibold">
+                                Image URL
+                            </label>
+                            <input
+                                type="url"
+                                name="image"
+                                id="image"
+                                class="form-control"
+                                value="<%= result.image %>"
+                                required
+                            >
+                            <div class="invalid-feedback">
+                                Please provide an image URL.
+                            </div>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="con" class="form-label">Edit Country</label>
-                        <input type="text" name="country" class="form-control" id="con" value="<%= result.country %>" required>
-                        <div class="invalid-feedback">country is required</div>
-                    </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12 col-sm-5">
+                                <label for="price" class="form-label fw-semibold">
+                                    Price per Night
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        id="price"
+                                        class="form-control"
+                                        value="<%= result.price %>"
+                                        min="0"
+                                        required
+                                    >
+                                    <div class="invalid-feedback">
+                                        Please enter a valid price.
+                                    </div>
+                                </div>
+                            </div>
 
-                    <button type="submit" class="btn def-btn">Edit</button>
-                </form>
+                            <div class="col-12 col-sm-7">
+                                <label for="loc" class="form-label fw-semibold">
+                                    Location
+                                </label>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    id="loc"
+                                    class="form-control"
+                                    value="<%= result.location %>"
+                                    required
+                                >
+                                <div class="invalid-feedback">
+                                    Location is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="con" class="form-label fw-semibold">
+                                Country
+                            </label>
+                            <input
+                                type="text"
+                                name="country"
+                                id="con"
+                                class="form-control"
+                                value="<%= result.country %>"
+                                required
+                            >
+                            <div class="invalid-feedback">
+                                Country is required.
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex flex-column flex-sm-row gap-2">
+                            <button type="submit"
+                                    class="btn btn-dark rounded-pill px-4">
+                                <i class="fa-solid fa-floppy-disk me-2"></i>
+                                Save Changes
+                            </button>
+
+                            <a href="/listings/<%= result._id %>"
+                               class="btn btn-outline-secondary rounded-pill px-4">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
             </div>
 
         </div>
-
-    </body>
+    </div>
+</div>
