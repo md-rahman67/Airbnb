@@ -15,7 +15,7 @@
                 <div class="card-body p-4 p-md-5">
 
                     <form action="/listings" method="post"
-                          class="needs-validation" novalidate>
+                          class="needs-validation" novalidate enctype="multipart/form-data">
 
                         <div class="mb-4">
                             <label for="title" class="form-label fw-semibold">
@@ -51,17 +51,16 @@
                             </div>
                         </div>
 
+
                         <div class="mb-4">
-                            <label for="img" class="form-label fw-semibold">
-                                Image URL
+                            <label class="form-label fw-semibold">
+                                Upload Image
                                 <span class="text-secondary fw-normal">(optional)</span>
                             </label>
                             <input
-                                type="url"
                                 name="image"
-                                id="img"
-                                placeholder="https://example.com/image.jpg"
                                 class="form-control"
+                                type="file"
                             >
                         </div>
 

@@ -12,9 +12,12 @@ module.exports.addListingForm = (req, res) => {
 
 module.exports.createListing = async (req, res, next) => {
     let { value } = joiListingSchema.validate(req.body);
-
+    let url = req.file.url;
+    let filename = req.file.filename;
+    console.log(url);
+    console.log(filename);
     value.owner = req.user._id; //* loggedIn user -> new listing Owner;
-
+    value.image = {url, filename};
     await Listing.create(value); //* whole value including owner field;
     req.flash("success", "New Listing created!!");
     res.redirect("/listings");

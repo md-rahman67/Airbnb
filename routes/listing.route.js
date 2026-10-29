@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Listing = require("../models/listing.models.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+const multer  = require("multer");
+const {storage} = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 const {index, addListingForm, createListing, logout, editForm, editListing, deleteListing, showListing} = require("../controllers/listings.controller.js");
 
@@ -14,7 +17,7 @@ router.get("/", index)
 router.get("/new", isLoggedIn, addListingForm)
 
 // *POST -> create route
-router.post("/", isLoggedIn, validateListing, createListing)
+router.post("/", isLoggedIn, upload.single('image'), validateListing, createListing)
 
 //* logout route
 router.get("/logout", logout)
