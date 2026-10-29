@@ -14,7 +14,7 @@
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4 p-md-5">
 
-                    <form action="/listings/<%= result._id %>?_method=PUT"
+                    <form action="/listings/<%= result._id %>?_method=PUT" enctype="multipart/form-data"
                           method="post"
                           class="needs-validation"
                           novalidate>
@@ -54,15 +54,14 @@
 
                         <div class="mb-4">
                             <label for="image" class="form-label fw-semibold">
-                                Image URL
+                                Update Image
                             </label>
                             <input
-                                type="url"
+                                type="file"
                                 name="image"
                                 id="image"
                                 class="form-control"
-                                value="<%= result.image %>"
-                                required
+                                value="<%= result.image.url %>"
                             >
                             <div class="invalid-feedback">
                                 Please provide an image URL.

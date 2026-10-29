@@ -30,7 +30,7 @@ router.get("/hello", (req, res) => {
 router.get("/:id/edit", isLoggedIn, isOwner, editForm)
 
 // *PUT -> edit route
-router.put("/:id", isLoggedIn, isOwner, validateListing, editListing)
+router.put("/:id", isLoggedIn, isOwner, upload.single('image'), validateListing, editListing)
 
 // !DELETE -> delete route
 router.delete("/:id", isLoggedIn, isOwner, deleteListing)

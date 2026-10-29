@@ -58,6 +58,14 @@ module.exports.editListing = async (req, res) => {
             country: country
         }
     }, { returnDocument: 'after' });
+    
+    if(req.file){
+        let url = req.file.url;
+        let imgEdit = await Listing.findById(listId.id);
+        imgEdit.image = {url};
+        await imgEdit.save();
+    }
+
 
     req.flash("success", "Listing updated!");
 
