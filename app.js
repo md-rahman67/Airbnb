@@ -44,7 +44,7 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
 const sessionOptions = {
-    secret: "mysupersecretcode",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
