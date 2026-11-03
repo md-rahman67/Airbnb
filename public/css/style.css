@@ -87,6 +87,9 @@ body {
 .card:hover img {
     opacity: 0.9;
 }
+.hvr:hover{
+    color: #fe424d !important;
+}
 
 
 

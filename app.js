@@ -2,7 +2,6 @@
 const dotenv = require("dotenv").config();
 const express = require("express");
 const app = express();
-const port = 8080;
 
 const path = require("path"); //* path required to access other folder from app.js like VIEWS / PUBLIC folder;
 const methodOverride = require("method-override"); //* to use other http verbs like PUT, DELETE, PATCH;
@@ -24,13 +23,13 @@ const userRouter = require("./routes/user.route.js");
 // TODO ------------database connection---------------
 const mongoose = require("mongoose");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+// const dbUrl = process.env.ATLASDB_URL;
 main().then(() => {
     console.log("connection to mongoDB");
 }).catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(process.env.ATLAS_DB_URL);
 }
 
 
@@ -106,6 +105,7 @@ app.use((err, req, res, next) => {
 
 
 //* Starting Server for any incoming Requests
-app.listen(port, () => {
-    console.log(`app is listening this port: ${port}`);
+app.listen(8080, () => {
+    console.log(`app is listening this port: 8080`);
+    // console.log(process.env.ATLAS_DB_URL);
 })
